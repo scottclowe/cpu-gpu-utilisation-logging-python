@@ -65,7 +65,7 @@ class Logger():
             fname=None, style=None, date_format=None,
             refresh_interval=1, iter_limit=None,
             show_header=True, header_only_once=True,
-            sep=',',
+            show_units=True, sep=',',
             ):
 
         self.fname = fname if fname else None
@@ -81,22 +81,27 @@ class Logger():
         self.show_header = show_header
         self.header_only_once = header_only_once
         self.header_count = 0
+        self.show_units = show_units
         self.sep = sep
         self.col_width = 10
         self.time_field_width = 15 if self.date_format is None else \
             max(self.col_width, len(time.strftime(self.date_format)))
 
-        self.time_field_name = 'Timestamp (s)' if self.date_format is None \
-            else 'Time'
+        if self.date_format is None:
+            self.time_field_name = 'Timestamp' + \
+                (' (s)' if self.show_units else '')
+        else:
+            self.time_field_name = 'Time'
+
         self.cpu_field_names = [
-            "CPU (%)",
-            "RAM (%)",
-            "Swap (%)",
+            'CPU' + (' (%)' if self.show_units else ''),
+            'RAM' + (' (%)' if self.show_units else ''),
+            'Swap' + (' (%)' if self.show_units else ''),
         ]
         self.gpu_field_names = [
-            "GPU (%)",
-            "Mem (%)",
-            "Temp (C)",
+            'GPU' + (' (%)' if self.show_units else ''),
+            'Mem' + (' (%)' if self.show_units else ''),
+            'Temp' + (' (C)' if self.show_units else ''),
         ]
         self.gpu_queries = [
             'utilization.gpu',
@@ -322,6 +327,21 @@ if __name__ == "__main__":
         help = 'Show time in custom format, FORMAT.',
         dest = 'date_format',
         action = 'store',
+    )
+    parser.add_argument(
+        '--units',
+        help = 'In the header, include units for each column.'
+               ' Enabled by default.',
+        dest = 'show_units',
+        action = 'store_true',
+        default = True,
+    )
+    parser.add_argument(
+        '--no-units',
+        help = 'In the header, omit units. Default is to include units.',
+        dest = 'show_units',
+        action = 'store_false',
+        default = True,
     )
     parser.add_argument(
         'fname',
