@@ -305,7 +305,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '-s', '--date-seconds',
         help = 'Show time in seconds since Unix epoch (with ms precision'
-               'reported). Enabled by default.',
+               ' reported). Enabled by default.',
         dest = 'date_format',
         action = 'store_const',
         const = None,
