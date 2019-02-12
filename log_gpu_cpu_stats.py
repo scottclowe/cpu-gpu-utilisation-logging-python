@@ -40,6 +40,12 @@ import contextlib
 
 @contextlib.contextmanager
 def smart_open(filename=None, mode='a'):
+    """
+    Context manager which can handle writing to stdout as well as files.
+
+    If filename is None, the handle yielded is to stdout. If writing to
+    stdout, the connection is not closed when leaving the context.
+    """
     if filename:
         hf = open(filename, mode)
     else:
