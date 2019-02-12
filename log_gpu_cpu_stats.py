@@ -323,10 +323,19 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         '-I', '--date-iso',
-        help = 'Show time in ISO format. Default is seconds (-s flag).',
+        help = 'Show time in ISO format.',
         dest = 'date_format',
         action = 'store_const',
         const = '%Y-%m-%dT%H:%M:%S%z',
+    )
+    parser.add_argument(
+        '--date-local',
+        help = 'Show time in ISO-compliant, but more human friendly format,'
+               ' omitting the time zone component and using a space as date/'
+               'time separator.',
+        dest = 'date_format',
+        action = 'store_const',
+        const = '%Y-%m-%d %H:%M:%S',
     )
     parser.add_argument(
         '-d', '--date-custom',
